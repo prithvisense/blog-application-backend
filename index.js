@@ -2,17 +2,36 @@ const express = require('express')
 const fs = require('fs')
 const mongoose = require('mongoose')
 const appConfig = require('./config/appConfig')
-const blog = require('./routes/blog')
+//const blog = require('./routes/blog')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 const app = express()
-const routesPath = './routes'
 
-fs.readdirSync(routesPath).forEach(function(file){
+//middlewares
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(cookieParser())
+
+//bootstrap models
+let modelsPath = './models/'
+fs.readdirSync(modelsPath).forEach(function(file){
     if(~file.indexOf('.js')){
-        let route = require(routesPath + '/' + file);
-        route.setRouter(app)
+        require(modelsPath + file)
     }
-})//end bootstrap route
+})
+
+// Bootstrap route
+let routesPath = './routes'
+fs.readdirSync(routesPath).forEach(function (file) {
+    if (~file.indexOf('.js')) {
+        console.log("including the following file");
+        console.log(routesPath + '/' + file)
+        let route = require(routesPath + '/' + file);
+        route.setRouter(app);
+    }
+});
+// end bootstrap route
 
 
 //adding database code here
