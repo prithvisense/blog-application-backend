@@ -27,8 +27,9 @@ var getAllBlogs = (req, res) => {
 
 //get blogs by id
 let viewBlogById = (req, res) => {
-    BlogModel.findOne({ 'blodId' : req.params.blodId}), 
-    (err, result) => {
+
+    BlogModel.findOne({ 'blogId' : req.params.blogId }, (err, result) => {
+        
         if(err){
             console.log(err);
             res.send(err)
@@ -41,15 +42,15 @@ let viewBlogById = (req, res) => {
             res.send(result)
         }
 
-    }
+    })
 
 }
 
 //create blog
 let createBlog = (req, res) => {
     let today = Date.now()
-    let blogId = shortid.generate()
-}
+    let blogId = shortId.generate()
+
 
 let newBlog = new BlogModel({
     blogId: blogId,
@@ -75,8 +76,28 @@ newBlog.save((err, result) => {
     }
 })
 
+}
 
-
+//edit blogs
+let editBlog = (req, res) => {
+    let options = req.body
+    console.log(options);
+    BlogModel.update({'blogId': req.params.blogId}, options, {multi: true})
+    .exec((err, res) => {
+        if(err){
+            console.log(err);
+            res.send(err)
+            
+        }else if(result == undefined || result == null || result == ''){
+            console.log('No Blogs Found');
+            res.send('No Blogs Found')
+            
+        }else{
+            res.send(result)
+        }
+    })
+    
+}
 
 
 
@@ -96,7 +117,7 @@ module.exports = {
     // viewbyAuthor: viewbyAuthor,
     // viewByCategory: viewByCategory,
     // deleteblog: deleteBlog,
-    // editBlog: editBlog,
+    editBlog: editBlog,
     createBlog: createBlog,
     // increaseBlogView: increaseBlogView
 }
