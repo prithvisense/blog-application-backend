@@ -80,10 +80,10 @@ newBlog.save((err, result) => {
 
 //edit blogs
 let editBlog = (req, res) => {
+    
     let options = req.body
     console.log(options);
-    BlogModel.update({'blogId': req.params.blogId}, options, {multi: true})
-    .exec((err, res) => {
+    BlogModel.update({ 'blogId': req.params.blogId }, options, {multi: true}).exec((err, result) => {
         if(err){
             console.log(err);
             res.send(err)
@@ -94,11 +94,32 @@ let editBlog = (req, res) => {
             
         }else{
             res.send(result)
+            console.log(result);
+            
         }
     })
     
 }
 
+//delete blog
+
+let deleteBlog = (req, res) => {
+    BlogModel.remove({ 'blogId' : req.params.blogId }, (err, result) => {
+        if(err){
+            console.log(err);
+            res.send(err)
+            
+        } else if(result == undefined || result == null || result == '') {
+            console.log('No Blogs Found');
+            res.send('No Blogs Found')
+            
+        } else{
+            console.log(result);
+            res.send(result)
+            
+        }
+    })
+}
 
 
 
@@ -116,7 +137,7 @@ module.exports = {
     viewBlogById: viewBlogById,
     // viewbyAuthor: viewbyAuthor,
     // viewByCategory: viewByCategory,
-    // deleteblog: deleteBlog,
+    deleteBlog: deleteBlog,
     editBlog: editBlog,
     createBlog: createBlog,
     // increaseBlogView: increaseBlogView
