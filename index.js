@@ -1,10 +1,13 @@
 const express = require('express')
 const fs = require('fs')
 const mongoose = require('mongoose')
-const appConfig = require('./config/appConfig')
 //const blog = require('./routes/blog')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+
+const appConfig = require('./config/appConfig')
+const globalAppErrorMiddleware = require('./middlewares/appErrorHandler')
+
 
 const app = express()
 
@@ -13,6 +16,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 
+app.use(globalAppErrorMiddleware.globalErrorHandler)
 //bootstrap models
 let modelsPath = './models/'
 fs.readdirSync(modelsPath).forEach(function(file){
@@ -33,6 +37,9 @@ fs.readdirSync(routesPath).forEach(function (file) {
 });
 // end bootstrap route
 
+//calling global 404 handler after the route
+app.use(globalAppErrorMiddleware.globalNotFoundHandler)
+//end globalNotFoundHandler
 
 //adding database code here
 

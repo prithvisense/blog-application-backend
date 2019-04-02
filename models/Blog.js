@@ -7,7 +7,7 @@ let blogSchema = new Schema(
         blogId: {
             type: String,
             unique: true
-        },                
+        },
         title: {
             type: String,
             default: ''
@@ -17,8 +17,8 @@ let blogSchema = new Schema(
             default: ''
         },
         bodyHtml: {
-                type: String,
-                default: ''
+            type: String,
+            default: ''
         },
         views: {
             type: Number,
@@ -43,7 +43,7 @@ let blogSchema = new Schema(
         },
         lastModified: {
             type: Date,
-            default: Date.now 
+            default: Date.now
         }
     }
 )

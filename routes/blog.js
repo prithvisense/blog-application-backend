@@ -15,7 +15,7 @@ let setRouter = (app) => {
     app.put(baseUrl + '/:blogId/edit', blogController.editBlog)
     //create blog
     app.post(baseUrl + '/create', blogController.createBlog)
-    // app.get(baseUrl + '/:blogId/count/view', blogController.increaseBlogView)
+    app.get(baseUrl + '/:blogId/count/view', blogController.increaseBlogView)
 
 
 

@@ -121,6 +121,30 @@ let deleteBlog = (req, res) => {
     })
 }
 
+//increase blog view
+let increaseBlogView = (req, res) => {
+    BlogModel.findOne({'blogId' : req.params.blogId}, (err, result) => {
+            if(err){
+                console.log(err);
+            } else if(result == undefined || result == null || result == ''){
+                console.log('No Blogs Found');
+                res.send('No Blogs Found')
+            }else{
+                result.views +=1
+                result.save(function(err, result) {
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log('Blog updated successfully');
+                        res.send('Blog updated successfully')
+                        
+                    }
+                })
+            }
+    }
+    )
+
+}
 
 
 
@@ -140,5 +164,5 @@ module.exports = {
     deleteBlog: deleteBlog,
     editBlog: editBlog,
     createBlog: createBlog,
-    // increaseBlogView: increaseBlogView
+    increaseBlogView: increaseBlogView
 }
